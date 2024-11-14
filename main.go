@@ -59,7 +59,7 @@ func (t *Text) textModifier() {
 		}
 
 		switch {
-		case num == 0 || num > 10 || num%1 != 0:
+		case num == 0 || num > 10:
 			panic("число не соответствует требованиям")
 		case sign == "/":
 			for i := 0; i <= len(firstString)/num-1; i++ {
@@ -72,7 +72,6 @@ func (t *Text) textModifier() {
 				resultString += firstString
 				i++
 			}
-
 			if len(resultString) >= 40 {
 				resultRune = []rune(resultString)
 				resultRune = resultRune[0:40]
@@ -80,12 +79,11 @@ func (t *Text) textModifier() {
 			} else {
 				fmt.Printf("%q\n", resultString)
 			}
-
+		default:
+			panic("Выражение не соответсвует требуемой арифметической операции")
 		}
-
 	}
 }
-
 func main() {
 	text := &Text{}
 
