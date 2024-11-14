@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -29,7 +30,7 @@ func (t *Text) textModifier() {
 		secondString := operation[3]
 
 		switch {
-		case len(firstString) > 10 || len(secondString) > 10:
+		case len(firstString) >= 10 || len(secondString) >= 10:
 			panic("Максимальное количество символов строки не более 10")
 		case signOperation == "+":
 			fmt.Printf("%q\n", firstString+secondString)
@@ -48,18 +49,18 @@ func (t *Text) textModifier() {
 		var resultRune []rune
 		firstStringRune := []rune(operation[1])
 
-		if len(signOperation) == 2 {
+		if len(signOperation) == 2 || len(signOperation) == 3 {
 			for i, val := range signOperation {
 				if i == 0 {
 					sign = string(val)
 				} else {
-					num = int(val - '0')
+					num, _ = strconv.Atoi(strings.Replace(signOperation, sign, "", 1))
 				}
 			}
 		}
 
 		switch {
-		case num == 0 || num > 10 || num%1 != 0:
+		case num == 0 || num > 10:
 			panic("число не соответствует требованиям")
 		case sign == "/":
 			for i := 0; i <= len(firstString)/num-1; i++ {
@@ -72,7 +73,6 @@ func (t *Text) textModifier() {
 				resultString += firstString
 				i++
 			}
-
 			if len(resultString) >= 40 {
 				resultRune = []rune(resultString)
 				resultRune = resultRune[0:40]
@@ -80,12 +80,11 @@ func (t *Text) textModifier() {
 			} else {
 				fmt.Printf("%q\n", resultString)
 			}
-
+		default:
+			panic("Выражение не соответсвует требуемой арифметической операции")
 		}
-
 	}
 }
-
 func main() {
 	text := &Text{}
 
